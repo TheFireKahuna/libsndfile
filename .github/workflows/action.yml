@@ -8,15 +8,17 @@ jobs:
       fail-fast: false
       matrix:
         name: [
-          windows-vs2022-x64-shared,
+          windows-vs2022-x64-avx2-shared,
+          windows-vs2022-x64-avx512-shared,
           windows-vs2022-arm64-shared
         ]
         include:
-          - name: windows-vs2022-x64-shared
+          - name: windows-vs2022-x64-avx2-shared
             os: windows-2025
             triplet: 'x64-windows-static'
             build-system: cmake
             cmake-generator: 'Visual Studio 17 2022'
+            artifact-name: 'libsndfile-x64-avx2'
             cmake-options: >-
               -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>
               -DBUILD_SHARED_LIBS=ON
@@ -26,12 +28,33 @@ jobs:
               -DCMAKE_BUILD_TYPE=Release
               -DVCPKG_TARGET_TRIPLET=x64-windows-static
               -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake
+              -DCMAKE_C_FLAGS="/arch:AVX2"
+              -DCMAKE_CXX_FLAGS="/arch:AVX2"
+
+          - name: windows-vs2022-x64-avx512-shared
+            os: windows-2025
+            triplet: 'x64-windows-static'
+            build-system: cmake
+            cmake-generator: 'Visual Studio 17 2022'
+            artifact-name: 'libsndfile-x64-avx512'
+            cmake-options: >-
+              -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>
+              -DBUILD_SHARED_LIBS=ON
+              -DBUILD_REGTEST=OFF
+              -DBUILD_EXAMPLES=OFF
+              -DINSTALL_PKGCONFIG_MODULE=OFF
+              -DCMAKE_BUILD_TYPE=Release
+              -DVCPKG_TARGET_TRIPLET=x64-windows-static
+              -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake
+              -DCMAKE_C_FLAGS="/arch:AVX512"
+              -DCMAKE_CXX_FLAGS="/arch:AVX512"
 
           - name: windows-vs2022-arm64-shared
             os: windows-11-arm
             triplet: 'arm64-windows-static'
             build-system: cmake
             cmake-generator: 'Visual Studio 17 2022'
+            artifact-name: 'libsndfile-arm64'
             cmake-options: >-
               -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>
               -DBUILD_SHARED_LIBS=ON
@@ -73,3 +96,14 @@ jobs:
           cmake .. -G "${{matrix.cmake-generator}}" ${{matrix.cmake-options}}
           cmake --build . --config Release
           ctest
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: startsWith(matrix.build-system,'cmake')
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: |
+            build/Release/*.dll
+            build/Release/*.lib
+            build/Release/*.pdb
+          if-no-files-found: error
