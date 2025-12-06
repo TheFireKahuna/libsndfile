@@ -49,6 +49,24 @@ jobs:
               -DCMAKE_C_FLAGS="/arch:AVX512"
               -DCMAKE_CXX_FLAGS="/arch:AVX512"
 
+          - name: windows-vs2022-x64-avx10-shared
+            os: windows-2025
+            triplet: 'x64-windows-static'
+            build-system: cmake
+            cmake-generator: 'Visual Studio 17 2022'
+            artifact-name: 'libsndfile-x64-avx10'
+            cmake-options: >-
+              -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>
+              -DBUILD_SHARED_LIBS=ON
+              -DBUILD_REGTEST=OFF
+              -DBUILD_EXAMPLES=OFF
+              -DINSTALL_PKGCONFIG_MODULE=OFF
+              -DCMAKE_BUILD_TYPE=Release
+              -DVCPKG_TARGET_TRIPLET=x64-windows-static
+              -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake
+              -DCMAKE_C_FLAGS="/arch:AVX10.1"
+              -DCMAKE_CXX_FLAGS="/arch:AVX10.1"
+
           - name: windows-vs2022-arm64-shared
             os: windows-11-arm
             triplet: 'arm64-windows-static'
