@@ -28,7 +28,7 @@ jobs:
               -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake
 
           - name: windows-vs2022-arm64-shared
-            os: windows-2025
+            os: windows-11-arm
             triplet: 'arm64-windows-static'
             build-system: cmake
             cmake-generator: 'Visual Studio 17 2022'

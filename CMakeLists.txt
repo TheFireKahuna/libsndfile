@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.5...4.0)
+cmake_minimum_required (VERSION 3.12...4.0)
 
 # MSVC runtime library flags are selected by an abstraction, CMake >= 3.15
 # This policy still need to be set even with cmake_minimum_required() command above.
@@ -9,11 +9,7 @@ if (POLICY CMP0091)
 	endif ()
 
 	if (CMAKE_VERSION VERSION_LESS 3.18)
-		if (DEFINED CMAKE_MSVC_RUNTIME_LIBRARY)
-			cmake_policy (SET CMP0091 NEW)
-		else ()
-			cmake_policy (SET CMP0091 OLD)
-		endif ()
+		cmake_policy (SET CMP0091 NEW)
 	endif ()
 endif ()
 
@@ -43,7 +39,7 @@ project(libsndfile VERSION 1.2.2)
 # Variables
 #
 
-set (CMAKE_C_STANDARD 99)
+set (CMAKE_C_STANDARD 11)
 set (CMAKE_C_STANDARD_REQUIRED TRUE)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
