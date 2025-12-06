@@ -106,4 +106,6 @@ jobs:
             build/Release/*.dll
             build/Release/*.lib
             build/Release/*.pdb
+            include/*.h
+            include/*.hh
           if-no-files-found: error
