@@ -9,8 +9,13 @@ jobs:
       matrix:
         name: [
           windows-vs2022-x64-avx2-shared,
+          windows-vs2022-x64-avx2-shared-debug,
           windows-vs2022-x64-avx512-shared,
-          windows-vs2022-arm64-shared
+          windows-vs2022-x64-avx512-shared-debug,
+          windows-vs2022-x64-avx10-shared,
+          windows-vs2022-x64-avx10-shared-debug,
+          windows-vs2022-arm64-shared,
+          windows-vs2022-arm64-shared-debug
         ]
         include:
           - name: windows-vs2022-x64-avx2-shared
@@ -19,6 +24,7 @@ jobs:
             build-system: cmake
             cmake-generator: 'Visual Studio 17 2022'
             artifact-name: 'libsndfile-x64-avx2'
+            build_type: 'Release'
             cmake-options: >-
               -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>
               -DBUILD_SHARED_LIBS=ON
@@ -30,6 +36,24 @@ jobs:
               -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake
               -DCMAKE_C_FLAGS="/arch:AVX2"
               -DCMAKE_CXX_FLAGS="/arch:AVX2"
+          - name: windows-vs2022-x64-avx2-shared-debug
+            os: windows-2025
+            triplet: 'x64-windows-static'
+            build-system: cmake
+            cmake-generator: 'Visual Studio 17 2022'
+            artifact-name: 'libsndfile-x64-avx2-debug'
+            build_type: 'Debug'
+            cmake-options: >-
+              -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>
+              -DBUILD_SHARED_LIBS=ON
+              -DBUILD_REGTEST=OFF
+              -DBUILD_EXAMPLES=OFF
+              -DINSTALL_PKGCONFIG_MODULE=OFF
+              -DCMAKE_BUILD_TYPE=Debug
+              -DVCPKG_TARGET_TRIPLET=x64-windows-static
+              -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake
+              -DCMAKE_C_FLAGS="/arch:AVX2"
+              -DCMAKE_CXX_FLAGS="/arch:AVX2"
 
           - name: windows-vs2022-x64-avx512-shared
             os: windows-2025
@@ -37,6 +61,7 @@ jobs:
             build-system: cmake
             cmake-generator: 'Visual Studio 17 2022'
             artifact-name: 'libsndfile-x64-avx512'
+            build_type: 'Release'
             cmake-options: >-
               -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>
               -DBUILD_SHARED_LIBS=ON
@@ -49,12 +74,32 @@ jobs:
               -DCMAKE_C_FLAGS="/arch:AVX512"
               -DCMAKE_CXX_FLAGS="/arch:AVX512"
 
+          - name: windows-vs2022-x64-avx512-shared-debug
+            os: windows-2025
+            triplet: 'x64-windows-static'
+            build-system: cmake
+            cmake-generator: 'Visual Studio 17 2022'
+            artifact-name: 'libsndfile-x64-avx512-debug'
+            build_type: 'Debug'
+            cmake-options: >-
+              -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>
+              -DBUILD_SHARED_LIBS=ON
+              -DBUILD_REGTEST=OFF
+              -DBUILD_EXAMPLES=OFF
+              -DINSTALL_PKGCONFIG_MODULE=OFF
+              -DCMAKE_BUILD_TYPE=Debug
+              -DVCPKG_TARGET_TRIPLET=x64-windows-static
+              -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake
+              -DCMAKE_C_FLAGS="/arch:AVX512"
+              -DCMAKE_CXX_FLAGS="/arch:AVX512"
+
           - name: windows-vs2022-x64-avx10-shared
             os: windows-2025
             triplet: 'x64-windows-static'
             build-system: cmake
             cmake-generator: 'Visual Studio 17 2022'
             artifact-name: 'libsndfile-x64-avx10'
+            build_type: 'Release'
             cmake-options: >-
               -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>
               -DBUILD_SHARED_LIBS=ON
@@ -67,12 +112,32 @@ jobs:
               -DCMAKE_C_FLAGS="/arch:AVX10.1"
               -DCMAKE_CXX_FLAGS="/arch:AVX10.1"
 
+          - name: windows-vs2022-x64-avx10-shared-debug
+            os: windows-2025
+            triplet: 'x64-windows-static'
+            build-system: cmake
+            cmake-generator: 'Visual Studio 17 2022'
+            artifact-name: 'libsndfile-x64-avx10-debug'
+            build_type: 'Debug'
+            cmake-options: >-
+              -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>
+              -DBUILD_SHARED_LIBS=ON
+              -DBUILD_REGTEST=OFF
+              -DBUILD_EXAMPLES=OFF
+              -DINSTALL_PKGCONFIG_MODULE=OFF
+              -DCMAKE_BUILD_TYPE=Debug
+              -DVCPKG_TARGET_TRIPLET=x64-windows-static
+              -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake
+              -DCMAKE_C_FLAGS="/arch:AVX10.1"
+              -DCMAKE_CXX_FLAGS="/arch:AVX10.1"
+
           - name: windows-vs2022-arm64-shared
             os: windows-11-arm
             triplet: 'arm64-windows-static'
             build-system: cmake
             cmake-generator: 'Visual Studio 17 2022'
             artifact-name: 'libsndfile-arm64'
+            build_type: 'Release'
             cmake-options: >-
               -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>
               -DBUILD_SHARED_LIBS=ON
@@ -81,6 +146,24 @@ jobs:
               -DBUILD_EXAMPLES=OFF
               -DINSTALL_PKGCONFIG_MODULE=OFF
               -DCMAKE_BUILD_TYPE=Release
+              -DVCPKG_TARGET_TRIPLET=arm64-windows-static
+              -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+          - name: windows-vs2022-arm64-shared-debug
+            os: windows-11-arm
+            triplet: 'arm64-windows-static'
+            build-system: cmake
+            cmake-generator: 'Visual Studio 17 2022'
+            artifact-name: 'libsndfile-arm64-debug'
+            build_type: 'Debug'
+            cmake-options: >-
+              -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>
+              -DBUILD_SHARED_LIBS=ON
+              -DCMAKE_GENERATOR_PLATFORM=ARM64
+              -DBUILD_REGTEST=OFF
+              -DBUILD_EXAMPLES=OFF
+              -DINSTALL_PKGCONFIG_MODULE=OFF
+              -DCMAKE_BUILD_TYPE=Debug
               -DVCPKG_TARGET_TRIPLET=arm64-windows-static
               -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake
 
@@ -112,7 +195,7 @@ jobs:
           mkdir build
           cd build
           cmake .. -G "${{matrix.cmake-generator}}" ${{matrix.cmake-options}}
-          cmake --build . --config Release
+          cmake --build . --config ${{matrix.build_type}}
           ctest
 
       - name: Upload artifacts
@@ -121,9 +204,9 @@ jobs:
         with:
           name: ${{ matrix.artifact-name }}
           path: |
-            build/Release/*.dll
-            build/Release/*.lib
-            build/Release/*.pdb
+            build/${{matrix.build_type}}/*.dll
+            build/${{matrix.build_type}}/*.lib
+            build/${{matrix.build_type}}/*.pdb
             include/*.h
             include/*.hh
           if-no-files-found: error
